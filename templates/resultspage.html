@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212; /* Dark background color */
+            color: #fff;
+            animation: fadeIn 1s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        .result-item {
+            background-color: rgba(255, 255, 255, 0.1); /* Light transparent for results */
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 5px solid #E94E77; /* Pink color for left border */
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        .result-item h3 {
+            margin-top: 0;
+            color: #E94E77; /* Pink color for movie titles */
+        }
+        .stars {
+            display: inline-block;
+        }
+        .star {
+            color: gold; /* Gold color for filled stars */
+            font-size: 20px;
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-button a {
+            background-color: #E94E77; /* Pink button color */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-button a:hover {
+            background-color: #C7335B; /* Darker pink on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recommended Movies for "{{ query }}"</h1>
+
+        {% for index, result in results.iterrows() %}
+        <div class="result-item">
+            <h3>{{ result['original_title'] }}</h3>
+            <p>{{ result['overview'] }}</p>
+
+            <!-- Display star rating based on vote_average (out of 5) -->
+            <div class="stars">
+                {% set rating = result['vote_average'] / 2 %}  <!-- Convert 10-point scale to 5 stars -->
+                {% for i in range(1, 6) %}
+                    {% if rating >= i %}
+                        <span class="star">&#9733;</span>  <!-- Filled star -->
+                    {% else %}
+                        <span class="star" style="color: #ccc;">&#9733;</span> <!-- Empty star -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <p>Rating: {{ result['vote_average'] }}/10</p>  <!-- Display rating out of 10 -->
+
+            <!-- Display cast members -->
+            <p><strong>Cast:</strong> {{ result['cast'] | join(', ') }}</p>
+        </div>
+        {% endfor %}
+
+        <div class="back-button">
+            <a href="/">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>
