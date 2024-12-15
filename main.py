@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 app = Flask(__name__)
 
 # Loading the dataset
-movies_data = pd.read_csv('/Users/shrejaladhikari/Downloads/movie_dataset.csv') #use your path dataset extracted from
+movies_data = pd.read_csv('movie_dataset.csv') #use your path dataset extracted from
 # :https://www.kaggle.com/datasets/utkarshx27/movies-dataset
 
 # Preprocessing pdata (example using overview for recommendations)
